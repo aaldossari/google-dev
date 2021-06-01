@@ -38,11 +38,11 @@ source "virtualbox-iso" "ubuntu1804-virtualbox" {
   http_port_max           = 9050
   iso_urls                = ["http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.5-server-amd64.iso"]
   iso_checksum            = "sha256:8c5fc24894394035402f66f3824beb7234b757dd2b5531379cb310cedfdf0996"
-  shutdown_command        = "echo 'ubuntu' | sudo -S shutdown -P now"
+  shutdown_command        = "echo 'vagrant' | sudo -S shutdown -P now"
   ssh_wait_timeout        = "20000s"
+  ssh_username            = "vagrant"
   ssh_password            = "vagrant"
   ssh_port                = 22
-  ssh_username            = "vagrant"
   vboxmanage              = [["modifyvm", "{{ .Name }}", "--memory", "${var.memory_amount}"]]
   virtualbox_version_file = ".vbox_version"
   headless                = "${var.headless_build}"
@@ -55,7 +55,7 @@ build {
 
 
   provisioner "shell" {
-    execute_command = "echo 'ubuntu' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
+    execute_command = "echo 'vagrant' | {{ .Vars }} sudo -E -S sh '{{ .Path }}'"
     script          = "../scripts/post_install_vagrant_first-box.sh"
     only            = ["virtualbox-iso.ubuntu1804-virtualbox"]
   }
